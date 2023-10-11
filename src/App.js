@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import QuoteList from "./QuoteList";
+import QuoteTest from "./QuoteTest";
 import "./App.css";
 
 class App extends Component {
   render() {
     return (
       <div className='App'>
-        <QuoteList />
+        <QuoteTest />
       </div>
     );
   }
