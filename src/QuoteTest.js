@@ -4,6 +4,9 @@ import "./QuoteList.css";
 import axios from "axios";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const baseURL = "https://api.quotable.io/quotes/random";
 
 export const QuoteTest = () => {
@@ -21,6 +24,9 @@ export const QuoteTest = () => {
 
   const onCopyText = () => {
     setIsCopied(true);
+    if (isCopied) {
+      toast.success("Copied Successfully !")
+    } 
     setTimeout(() => {
       setIsCopied(false);
     }, 1000);
@@ -40,12 +46,18 @@ export const QuoteTest = () => {
           </button>
         </div>
         <div className='QuoteList-quotes'>
-          {!quote ?  <div className='Quote Quote-text'>- Click to get a quote - </div>  : <Quote text={quote.content} author={quote.author}/> }
-          <div className='QuoteList-clipboard'>
-            <CopyToClipboard text={quote.content} onCopy={onCopyText}>
-              <span>{isCopied ? "Copied!" : <i className="fa-regular fa-copy"></i>}</span>
-            </CopyToClipboard>
-          </div>
+          {!quote ?  
+            <div className='Quote Quote-text'>- Click to get a quote - </div>  
+            : 
+            <>
+              <Quote text={quote.content} author={quote.author}/> 
+              <div className='QuoteList-clipboard'>
+              <CopyToClipboard text={quote.content} onCopy={onCopyText}>
+                <i className="fa-regular fa-copy"></i>
+              </CopyToClipboard>
+              </div>
+            </>
+          }
         </div>
       </div>
     </>
