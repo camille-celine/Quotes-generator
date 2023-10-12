@@ -26,22 +26,30 @@
   letter-spacing: 0.6rem;
 }
 .QuoteList-title span {
+  font-family: 'Oswald', sans-serif;
   font-weight: 700;
   letter-spacing: 0;
 }
 
-.QuoteList-sidebar img {
+.QuoteList-sidebar i {
+  color: #f9bf49; 
+  font-size: 150px;
+  padding: 25px;
   width: 50%;
   border-radius: 50%;
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.1);
 }
-.QuoteList-sidebar img:hover {
+.QuoteList-sidebar i:hover {
   animation-name: shake-slow;
   animation-duration: 5s;
   animation-timing-function: ease-in-out;
   animation-delay: 0s;
 }
+
 .QuoteList-quotes {
+  display: flex;
+  align-content: center;
+  justify-content: center;
   height: 90%;
   background: white;
   align-self: center;
@@ -56,7 +64,8 @@
 }
 
 .QuoteList-getmore {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  font-family: 'Oswald', sans-serif;
   width: 50%;
   border-radius: 2rem;
   padding: 1rem 2rem;
@@ -65,6 +74,7 @@
   margin: 2rem;
   border: none;
   word-spacing: 0.2rem;
+  letter-spacing: 0.1rem;
   cursor: pointer;
   transition: 0.8s cubic-bezier(0.2, 1, 0.2, 1);
   outline: none;
@@ -75,6 +85,40 @@
 .QuoteList-getmore:hover {
   transform: translateY(-2px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+@media screen and (max-width: 1200px) {
+  .QuoteList {
+    flex-direction: column;
+    align-items: center;
+  }
+  .QuoteList-sidebar {
+    flex-direction: row;
+    width: 70%;
+  }
+  .QuoteList-sidebar i {
+    display: none;
+  }
+}
+
+
+@media screen and (max-width: 900px) {
+  .QuoteList-title {
+    font-size: 2rem;
+    margin: 15px;
+  }
+  .QuoteList-sidebar {
+    flex-direction: column;
+    width: 70%;
+  }
+  .QuoteList-getmore {
+    margin: 0 0 10 0;
+    width: 70%;
+  }
+  .QuoteList-quotes {
+    font-size: 10px;
+  }
 }
 
 @keyframes shake-slow {
@@ -229,3 +273,5 @@
     transform: translate(10px, -9px) rotate(2.5deg);
   }
 }
+
+
