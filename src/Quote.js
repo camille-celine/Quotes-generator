@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./Quote.css";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 class Quote extends Component {
 

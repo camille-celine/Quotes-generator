@@ -87,6 +87,17 @@
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
 }
 
+.QuoteList-clipboard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 30px;
+}
+
+.QuoteList-clipboard i {
+  font-size: 25px;
+}
+
 
 @media screen and (max-width: 1200px) {
   .QuoteList {
@@ -120,6 +131,19 @@
     font-size: 10px;
   }
 }
+
+@media screen and (max-width: 700px) {
+  .QuoteList-title{
+    font-size: 2rem;
+  }
+  .QuoteList-quotes {
+    flex-direction: column;
+  }
+  .QuoteList-clipboard {
+    justify-content: right;
+  }
+}
+
 
 @keyframes shake-slow {
   0% {
