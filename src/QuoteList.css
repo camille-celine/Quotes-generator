@@ -98,6 +98,13 @@
   font-size: 25px;
 }
 
+.Toastify__toast--success {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  border: 2px solid !important;
+  border-radius: 5px !important;
+  background: #9675cc !important;
+}
+
 
 @media screen and (max-width: 1200px) {
   .QuoteList {
