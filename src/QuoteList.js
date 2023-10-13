@@ -1,105 +1,73 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Quote from "./Quote";
-import axios from "axios";
-import { v4 as uuidv4 } from 'uuid';
 import "./QuoteList.css";
-import couch from "./couch.svg"
+import axios from "axios";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
-class QuoteList extends Component {
-  static defaultProps = {
-    numQuotesToGet: 7
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const baseURL = "https://api.quotable.io/quotes/random";
+
+export const QuoteTest = () => {
+
+  const [quote, setQuote ] = useState("");
+  const [isCopied, setIsCopied] = useState(false);
+  
+  const getQuote = async () => {
+    axios.get(baseURL).then((response) => {
+      let newQuote = response.data[0];
+      console.log(newQuote);
+      setQuote(newQuote);
+    });
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      quotes: JSON.parse(window.localStorage.getItem("quotes") || "[]"),
-      loading: false
-    };
-    this.seenQuotes = new Set(this.state.quotes.map(q => q.text));
-    console.log(this.seenQuotes);
-    this.handleClick = this.handleClick.bind(this);
-  }
-  componentDidMount() {
-    if (this.state.quotes.length === 0) this.getQuotes();
-  }
-  async getQuotes() {
-    try {
-      let quotes = [];
-      while (quotes.length < this.props.numQuotesToGet) {
-        let res = await axios.get("https://friends-quotes-api.herokuapp.com/quotes/random");
-        let newQuote = res.data.quote;
-        const quoteExist = quotes.some(quote => {
-          return quote.text === newQuote;
-        });
-        if (!quoteExist && !this.seenQuotes.has(newQuote)) {
-          quotes.push({ id: uuidv4(), text: newQuote, votes: 0 });
-        } else {
-          console.log("FOUND A DUPLICATE!");
-          console.log(newQuote);
-        }
-      }
-      this.setState(
-        st => ({
-          loading: false,
-          quotes: [...st.quotes, ...quotes]
-        }),
-        () =>
-          window.localStorage.setItem("quotes", JSON.stringify(this.state.quotes))
-      );
-    } catch (e) {
-      alert(e);
-      this.setState({ loading: false });
-    }
-  }
-  handleVote(id, delta) {
-    this.setState(
-      st => ({
-        quotes: st.quotes.map(q =>
-          q.id === id ? { ...q, votes: q.votes + delta } : q
-        )
-      }),
-      () =>
-        window.localStorage.setItem("quotes", JSON.stringify(this.state.quotes))
-    );
-  }
-  handleClick() {
-    this.setState({ loading: true }, this.getQuotes);
-  }
-  render() {
-    if (this.state.loading) {
-      return (
-        <div className='QuoteList-spinner'>
-          <i className='far fa-8x fa-laugh fa-spin' />
-          <h1 className='QuoteList-title'>Loading...</h1>
-        </div>
-      );
-    }
-    let quotes = this.state.quotes.sort((a, b) => b.votes - a.votes);
-    return (
+
+  const onCopyText = () => {
+    setIsCopied(true);
+    if (isCopied) {
+      toast.success("Copied Successfully !")
+    } 
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1000);
+  };
+  
+  return (
+    <>
       <div className='QuoteList'>
         <div className='QuoteList-sidebar'>
           <h1 className='QuoteList-title'>
-            F.R.I.E.N.D.S <span>Quotes</span>
+            <span>Quote</span> Generator
           </h1>
-          <img src={couch} alt="emoji"/>
-          <button className='QuoteList-getmore' onClick={this.handleClick}>
-            Fetch Quotes
+          <i className="fa-solid fa-quote-left fa-flip-vertical"></i>
+          {/* why not getQuote() ? */}
+          <button style ={{display: quote ? 'block' : 'none'}} className='QuoteList-getmore' onClick={getQuote}>
+            Fetch New Quote
           </button>
         </div>
-
-        <div className='QuoteList-quotes'>
-          {quotes.map(q => (
-            <Quote
-              key={q.id}
-              votes={q.votes}
-              text={q.text}
-              upvote={() => this.handleVote(q.id, 1)}
-              downvote={() => this.handleVote(q.id, -1)}
-            />
-          ))}
+        <div style={{flexWrap: quote ? 'nowrap' : 'wrap'}} className='QuoteList-quotes'>
+          {!quote ?  
+            <button className='QuoteList-getquote' onClick={getQuote}>
+              Fetch Quote
+            </button> 
+            : 
+            <>
+              <Quote text={quote.content} author={quote.author}/> 
+              <div className='QuoteList-clipboard'>
+              <CopyToClipboard text={quote.content} onCopy={onCopyText}>
+                <i className="fa-regular fa-copy"></i>
+              </CopyToClipboard>
+              </div>
+            </>
+          }
         </div>
       </div>
-    );
-  }
+    </>
+  );
 }
-export default QuoteList;
+
+export default QuoteTest;
+
+
+
+
