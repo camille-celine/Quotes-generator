@@ -7,7 +7,8 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const baseURL = "https://api.quotable.io/quotes/random";
+const baseURL = "https://api.api-ninjas.com/v1/quotes";
+const apiKey = process.env.REACT_APP_API_KEY;
 
 export const QuoteTest = () => {
 
@@ -15,10 +16,14 @@ export const QuoteTest = () => {
   const [isCopied, setIsCopied] = useState(false);
   
   const getQuote = async () => {
-    axios.get(baseURL).then((response) => {
+    axios.get(baseURL, {
+      headers: {
+          'X-Api-Key': apiKey
+      }
+    }).then((response) => {
       let newQuote = response.data[0];
-      console.log(newQuote);
       setQuote(newQuote);
+      console.log(newQuote);
     });
   };
 
@@ -52,9 +57,9 @@ export const QuoteTest = () => {
             </button> 
             : 
             <>
-              <Quote text={quote.content} author={quote.author}/> 
+              <Quote text={quote.quote} author={quote.author}/> 
               <div className='QuoteList-clipboard'>
-              <CopyToClipboard text={quote.content} onCopy={onCopyText}>
+              <CopyToClipboard text={quote.quote} onCopy={onCopyText}>
                 <i className="fa-regular fa-copy"></i>
               </CopyToClipboard>
               </div>
